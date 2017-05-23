@@ -1,0 +1,10 @@
+let str = ""
+basic.forever(() => {
+    str = serial.readLine()
+    basic.showString(str)
+    serial.writeLine("Got line is: " + str)
+})
+serial.onDataReceived(serial.delimiters(Delimiters.NewLine), () => {
+
+})
+serial.writeLine("Startup...")

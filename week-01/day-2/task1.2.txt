@@ -1,0 +1,11 @@
+basic.forever(() => {
+    basic.showArrow(ArrowNames.North)
+    basic.pause(100)
+    basic.showLeds(`
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        `)
+})

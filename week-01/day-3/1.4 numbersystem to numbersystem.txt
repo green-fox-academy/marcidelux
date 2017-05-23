@@ -1,0 +1,60 @@
+let hexToDecPart = 0
+let decimal_number = 0
+let tempString = ""
+let temp = 0
+let length_of_in_string = 0
+let string_in = ""
+let mode = 0
+let index = 0
+basic.forever(() => {
+
+})
+serial.onDataReceived(serial.delimiters(Delimiters.NewLine), () => {
+    string_in = serial.readString()
+    length_of_in_string = string_in.length - 3
+    string_in = string_in.substr(0, length_of_in_string + 1)
+    if (string_in == "B2D") {
+        mode = 0
+        serial.writeLine("mode: binary to decimal")
+    } else {
+        if (string_in == "H2D") {
+            mode = 1
+            serial.writeLine("mode: hexa to decimal")
+        }
+    }
+    if (string_in != "B2D" && string_in != "H2D") {
+        if (mode == 0) {
+            for (let index = 0; index <= length_of_in_string; index++) {
+                temp = parseInt(string_in.substr(length_of_in_string - index, 1)) * Math.pow(2, index)
+                decimal_number = decimal_number + temp
+            }
+            serial.writeLine("binary: " + ("" + string_in + (" decimal: " + decimal_number)))
+            decimal_number = 0
+        } else if (mode == 1) {
+            for (let index = 0; index <= length_of_in_string; index++) {
+                tempString = string_in.substr(length_of_in_string - index, 1)
+                if (tempString == "A") {
+                    temp = 10
+                } else if (tempString == "B") {
+                    temp = 11
+                } else if (tempString == "C") {
+                    temp = 12
+                } else if (tempString == "D") {
+                    temp = 13
+                } else if (tempString == "E") {
+                    temp = 14
+                } else if (tempString == "F") {
+                    temp = 15
+                } else {
+                    temp = parseInt(tempString)
+                }
+                hexToDecPart = temp * Math.pow(16, index)
+                decimal_number = decimal_number + hexToDecPart
+            }
+            serial.writeLine("hexadecimal: " + ("" + string_in + (" decimal: " + decimal_number)))
+            decimal_number = 0
+        }
+    }
+})
+mode = 0
+serial.writeLine("Started, mode: B2D")

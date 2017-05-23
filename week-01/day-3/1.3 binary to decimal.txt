@@ -1,0 +1,21 @@
+let decimal_number = 0
+let temp = 0
+let length_of_in_string = 0
+let string_in = ""
+basic.forever(() => {
+
+})
+serial.onDataReceived(serial.delimiters(Delimiters.NewLine), () => {
+    string_in = serial.readString()
+    serial.writeLine("bin:")
+    serial.writeString(string_in)
+    length_of_in_string = string_in.length - 3
+    serial.writeLine("")
+    for (let index = 0; index <= length_of_in_string; index++) {
+        temp = parseInt(string_in.substr(length_of_in_string - index, 1)) * Math.pow(2, index)
+        decimal_number = decimal_number + temp
+    }
+    serial.writeLine("dec: ")
+    serial.writeNumber(decimal_number)
+    decimal_number = 0
+})

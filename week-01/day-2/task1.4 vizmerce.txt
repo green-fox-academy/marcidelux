@@ -1,0 +1,56 @@
+let pointy = 0
+let x = 0
+let pointx = 0
+let y = 0
+let j = 0
+let i = 0
+basic.forever(() => {
+    y = input.rotation(Rotation.Pitch)
+    x = input.rotation(Rotation.Roll)
+    if (-30 <= x && x < -20) {
+        pointx = 0
+    } else {
+        if (-20 <= x && x < -10) {
+            pointx = 1
+        } else {
+            if (-10 <= x && x < 10) {
+                pointx = 2
+            } else {
+                if (10 <= x && x < 20) {
+                    pointx = 3
+                } else {
+                    if (20 <= x && x < 30) {
+                        pointx = 4
+                    }
+                }
+            }
+        }
+    }
+    if (-30 <= y && y < -20) {
+        pointy = 0
+    } else {
+        if (-20 <= y && y < -10) {
+            pointy = 1
+        } else {
+            if (-10 <= y && y < 10) {
+                pointy = 2
+            } else {
+                if (10 <= y && y < 20) {
+                    pointy = 3
+                } else {
+                    if (20 <= y && y < 30) {
+                        pointy = 4
+                    }
+                }
+            }
+        }
+    }
+    for (let i = 0; i <= 4; i++) {
+        for (let j = 0; j <= 4; j++) {
+            if (i != pointx || j != pointy) {
+                led.unplot(i, j)
+            }
+        }
+    }
+    led.plot(Math.abs(pointx - 4), Math.abs(pointy - 4))
+})

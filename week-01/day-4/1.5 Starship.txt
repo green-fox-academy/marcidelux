@@ -1,0 +1,107 @@
+let S1_on = 0
+let S2_on = 0
+let S3_on = 0
+let B3_on = 0
+let shipX = 0
+let B1Y = 0
+let B1X = 0
+let B1_on = 0
+let B2X = 0
+let B2_on = 0
+let B2Y = 0
+let B3X = 0
+let shooting = 0
+let B3Y = 0
+input.onButtonPressed(Button.B, () => {
+    if (shipX < 4) {
+        led.unplot(shipX, 4)
+        shipX += 1
+        led.plot(shipX, 4)
+    }
+})
+input.onButtonPressed(Button.AB, () => {
+    shooting = 1
+})
+basic.forever(() => {
+    if (shooting == 1) {
+        if (B1_on == 0 && (B2_on == 0 && B3_on == 0)) {
+            B3_on = 1
+            B3X = shipX
+            B3Y = 4
+        } else if (B1_on == 0 && (B2_on == 0 && B3_on == 1)) {
+            B2_on = 1
+            B2X = shipX
+            B2Y = 3
+        } else if (B1_on == 0 && (B2_on == 1 && B3_on == 0)) {
+            S3_on = 1
+            B3X = shipX
+            B3Y = 3
+        } else if (B1_on == 0 && (B2_on == 1 && B3_on == 1)) {
+            B1_on = 1
+            B1X = shipX
+            B1Y = 3
+        } else if (B1_on == 1 && (B2_on == 0 && B3_on == 0)) {
+            S3_on = 1
+            B3X = shipX
+            B3Y = 3
+        } else if (B1_on == 1 && (B2_on == 0 && B3_on == 1)) {
+            B2_on = 1
+            B2X = shipX
+            B2Y = 3
+        } else if (B1_on == 1 && (B2_on == 1 && B3_on == 0)) {
+            B3_on = 1
+            B3X = shipX
+            B3Y = 3
+        }
+        shooting = 0
+    }
+    if (B3_on == 1) {
+        led.unplot(B3X, B3Y)
+        B3Y += -1
+        led.plot(B3X, B3Y)
+        led.plot(shipX, 4)
+        if (B3Y < 0) {
+            B3_on = 0
+        }
+    }
+    if (B2_on == 1) {
+        led.unplot(B2X, B2Y)
+        B2Y += -1
+        led.plot(B2X, B2Y)
+        led.plot(shipX, 4)
+        if (B2Y < 0) {
+            B2_on = 0
+        }
+    }
+    if (B1_on == 1) {
+        led.unplot(B1X, B1Y)
+        B1Y += -1
+        led.plot(B1X, B1Y)
+        led.plot(shipX, 4)
+        if (B1X < 0) {
+            B1_on = 0
+        }
+    }
+})
+input.onButtonPressed(Button.A, () => {
+    if (shipX > 0) {
+        led.unplot(shipX, 4)
+        shipX += -1
+        led.plot(shipX, 4)
+    }
+})
+B3Y = 0
+B2Y = 0
+B1Y = 0
+B3X = 0
+B2X = 0
+B1X = 0
+S3_on = 0
+S2_on = 0
+S1_on = 0
+B3_on = 0
+B2_on = 0
+B1_on = 0
+shooting = 0
+shipX = 2
+led.plot(shipX, 4)

@@ -1,0 +1,7 @@
+let g = 0
+basic.forever(() => {
+    g = input.acceleration(Dimension.Z)
+    if (g >= -100) {
+        basic.showIcon(IconNames.Diamond)
+    }
+})

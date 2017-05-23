@@ -1,0 +1,14 @@
+let item = 0
+let StringB = ""
+let y = 0
+let g = 0
+let StringA = ""
+let x = 0
+basic.forever(() => {
+    x = parseInt(StringA)
+    y = parseInt(StringB)
+    item = x + y
+    basic.showNumber(item)
+})
+StringA = "9"
+StringB = "10"

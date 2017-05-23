@@ -1,0 +1,9 @@
+let item = 0
+basic.forever(() => {
+    for (let index = 0; index <= 4; index++) {
+        item = index
+        item += 4
+        basic.showNumber(item)
+        basic.pause(100)
+    }
+})
