@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main()
+{
+    FILE *stresttest;
+    char buff[255];
+
+    stresttest = fopen("totorotest.txt", "w+");
+
+    if (stresttest == NULL) {
+        printf("Error!");
+        exit(1);
+    }
+    
+    printf("Give me a number: ");
+    scanf()
+
+    fclose(stresttest);
+    return 0;
+}
+

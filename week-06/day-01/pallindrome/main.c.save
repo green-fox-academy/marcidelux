@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>
+
+void  palindrome(char *input, int len);
+
+int main()
+{
+	char input[100];
+	int len = strlen(input);
+	
+	printf("please enter a word: \n");
+	scanf("%s", input);
+    kaki(input);
+
+	return 0;
+}
+
+void  palindrome(char *input, int len)
+{
+    if (input == NULL) {
+        printf("Empty char!\n");
+        break;
+    }
+    
+	printf("%s", input);
+	
+	int *pointer = input;
+	
+	for (int i = 0; i < strlen(input); i++) {
+		pointer = &input[strlen(input) - i - 1];
+		printf("%c", *pointer);
+	}
+}
