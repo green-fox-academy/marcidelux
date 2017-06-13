@@ -55,6 +55,7 @@ int main(void)
 	while (1) {
 		temp = read_temp(TC74A0_ADRESS);
 		printf("%d\n", temp);
+		LED_PIN |= 1 << LED_PIN_POS;
 		_delay_ms(1000);
 		//TODO
 		//Write the temperature frequently.
@@ -77,20 +78,4 @@ int main(void)
 	}
 	
 	
-}
-
-
-char* data_to_char_Temp(uint8_t data)
-{
-	char char_data[20];
-	
-	if (data < 0b00011001)
-	{
-		strcpy(char_data, "Temp lower than 25C");
-	} else if (data < 0b01111110)
-	{
-		strcpy(char_data, "Temp lower than 126C");
-	} 
-	
-	return char_data;
 }

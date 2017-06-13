@@ -40,7 +40,7 @@ void TWI_stop(void)
 	//TODO
 	//Send stop signal
 	
-	TWCR = (1 << TWEN) | (1 << TWSTO); // (1 << TWINT) | <- deleted
+	TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO); // (1 << TWINT) | <- deleted in Cris's
 }
 
 uint8_t TWI_read_ack(void)
@@ -51,9 +51,8 @@ uint8_t TWI_read_ack(void)
 	//the DATA has been transmitted, and ACK/
 	//NACK has been received.
 	
-	TWCR |= (1 << TWINT) | (1 <<TWEA); //  | (1 << TWEN) <-deleted
+	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWEN); //  | (1 << TWEN) <-deleted in Cris's
 	while (!(TWCR & (1 << TWINT)));
-	
 	return TWDR;
 
 }
@@ -66,10 +65,8 @@ uint8_t TWI_read_nack(void)
 	//Wait for TWINT Flag set. This indicates that
 	//the DATA has been transmitted, and ACK/
 	//NACK has been received.
-	TWCR |= 1 << TWINT; //  | (1 << TWEN) <- deleted
-	
+	TWCR |= 1 << TWINT | (1 << TWEN); //  | (1 << TWEN) <- deleted in Cris's
 	while (!(TWCR & (1 << TWINT)));
-	
 	return TWDR;
 	
 }
@@ -78,14 +75,12 @@ void TWI_write(uint8_t u8data)
 {
 	//TODO
 	//Load DATA into TWDR Register. Clear TWINT
-	//bit in TWCR to start transmission of data.
-	TWDR = u8data;
-	
-	TWCR |= (1 << TWINT) | (1 << TWEN);
-	
+	//bit in TWCR to start transmission of data.	
 	//Wait for TWINT Flag set. This indicates that
 	//the DATA has been transmitted, and ACK/
 	//NACK has been received.
+	TWDR = u8data;
+	TWCR |= (1 << TWINT) | (1 << TWEN);
 	while (!(TWCR & (1 << TWINT)));
 }
 
@@ -95,31 +90,18 @@ void TWI_write(uint8_t u8data)
 //datasheet: http://ww1.microchip.com/downloads/en/DeviceDoc/21462D.pdf
 //And returns with the temperature.
 
-uint8_t TC74_Get_Temp(uint8_t adress)
+uint8_t read_temp(uint8_t adress)
 {
 	uint8_t data;
 	uint8_t rw_adress = adress << 1;;
 	
-	// Send the start signal
 	TWI_start();
-	
-	//Add write bit to the adress then send it. 
 	TWI_write(rw_adress);
-	
-	// Set mode to 00 - RTR - Read temperature
-	TWI_write(0x00);
-	
-	//Start again
+	TWI_write(0);
 	TWI_start();
-	
-	//Add read bit to adress then send it.
 	rw_adress |= 0x01;
 	TWI_write(rw_adress);
-	
-	// Load data 
 	data = TWI_read_nack();
-	
-	//Stop
 	TWI_stop();
 	
 	return data;
