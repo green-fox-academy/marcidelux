@@ -136,6 +136,7 @@ local.properties
 
 ### CodeBlocks ###
 # specific to CodeBlocks IDE
+*.c.save
 *.cbp
 *.layout
 *.depend
