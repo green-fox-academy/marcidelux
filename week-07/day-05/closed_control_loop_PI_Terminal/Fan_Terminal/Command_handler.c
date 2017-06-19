@@ -13,6 +13,7 @@ char input;
 char write_file_name[100];
 char read_file_name[100];
 int log_on = 1;
+int log_on2 = 1;
 
 //variables for logging
 int port_opened = 0;
@@ -38,13 +39,15 @@ void command_execution(char *instruction)
     } else if (strcmp(instruction, "w") == 0) {
         set_write_file_name();
     } else if (strcmp(instruction, "s") == 0) {
-        logging_temperature();
+        logging_fan_speed();
     } else if (strcmp(instruction, "r") == 0) {
         set_read_file_name();
-    } else if (strcmp(instruction, "a") == 0) {
-        ;
+    } else if (strcmp(instruction, "k") == 0) {
+        switch_real_time();
     }else   if (strcmp(instruction, "e") == 0) {
         exit_program();
+    }else   if (strcmp(instruction, "h") == 0) {
+        show_command_list();
     } else {
         printf("Invalid instruction!\n");
         Sleep(1000);
@@ -54,11 +57,9 @@ void command_execution(char *instruction)
 }
 
 void exit_program(){
-    printf("program will shut down in:\n");
-    for (int i = 3; i >=1; i--) {
-        printf("%d..\n",i);
-        Sleep(1000);
-    }
+
+    clear_screen();
+    file_print_delay("tmp/rip.txt", 100);
     exit(0);
 }
 
@@ -140,23 +141,14 @@ void set_read_file_name()
     printf("\n-> Next command:");
 }
 
-void logging_temperature()
+void switch_real_time()
 {
-    int sleep = 0;
-
     if(port_opened == 0) {
         printf("File was not opened!");
         printf("\n-> Next command:");
         return;
     }
-/*
-    FILE *log;
-    log = fopen(write_file_name, "w");
 
-    if (log == NULL) {
-        printf("Error opening file!\n");
-    }
-*/
     while(log_on) {
 
         if (_kbhit() != 0) {
@@ -171,6 +163,50 @@ void logging_temperature()
 
         if (comRead(port_index, buffer, 1)) {
 
+            if (buffer[0] != '\n') {
+                temp[i] = buffer[0];
+                i++;
+            } else {
+                temp[i] = '\0';
+                i = 0;
+
+                clear_screen();
+                printf("FAN SPEED REAL TIME DATA\n");
+                printf("Ref[rpm] Out[rpm] Duty[%]\n");
+                puts(temp);
+            }
+        }
+
+    }
+
+    log_on = 1;
+}
+
+void logging_fan_speed()
+{
+
+    if(port_opened == 0) {
+        printf("File was not opened!");
+        printf("\n-> Next command:");
+        return;
+    }
+
+    FILE *log;
+    log = fopen(write_file_name, "w");
+
+    while(log_on2) {
+
+        if (_kbhit() != 0) {
+            input = _getch();
+        }
+
+        if(input == 's') {
+            printf("\n-> Next command:");
+            input = 'q';
+            log_on2 = 0;
+        }
+
+        if (comRead(port_index, buffer, 1)) {
 
             if (buffer[0] != '\n') {
                 temp[i] = buffer[0];
@@ -179,32 +215,21 @@ void logging_temperature()
                 temp[i] = '\0';
                 i = 0;
 
-                /*
+                puts(temp);
+
                 curtime = time(NULL);
                 lt = localtime(&curtime);
                 fprintf(log, "%d-%d-%d %d:%d:%d\t", lt -> tm_year + 1900, lt -> tm_mon, lt -> tm_mday,
-                                                 lt ->tm_hour, lt ->tm_min, lt->tm_sec);
+                                     lt ->tm_hour, lt ->tm_min, lt->tm_sec);
                 fputs(temp, log);
                 fprintf(log, "\n");
-                */
-                //printf("RPM: ");
-                puts(temp);
-
-                sleep = 1;
             }
-        }
-
-        if (sleep == 1) {
-            Sleep(50);
-            clear_screen();
-            sleep = 0;
         }
     }
 
-    //fclose(log);
-    log_on = 1;
+    fclose(log);
+    log_on2 = 1;
 }
-
 
 void clear_screen()
 {

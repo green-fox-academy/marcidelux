@@ -1,0 +1,22 @@
+#########################
+### FAN SPEED CONTROL ###
+#########################
+
+Port commands:
+l - List aviable ports
+p - Set port name
+o - Open selected port
+c - Close selected port
+
+File I/O commands:
+w - Set write file name
+r - Set read file name
+s - Logging fan speed
+
+Program commands:
+k - Real time data mode
+h - Show command list
+e - exit from the program
+*************************
+
+Your command: 
