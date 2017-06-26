@@ -26,6 +26,17 @@
 int file_print(char *path);
 
 /**
+*   Name: file_print_delay
+*   Job: Prints all lines from a txt file. There is delay [ms] between printing of each line.
+*   input: char *path It's maximum size is PATH_LENGTH.
+*   input: int delay This is the delay between the prints, it is given with milliseconds.
+*   returns: 0 if there was no problem 1 if something went wrong.
+*   Error handling: wrong path, empty file.
+*/
+
+int file_print_delay(char *path, int delay);
+
+/**
 *   Name: file_write_single_line
 *   Job: Write a single line to the target txt file.
 *   input: char *path It's maximum size is PATH_LENGTH.
@@ -94,5 +105,30 @@ int path_test(char *path);
 *   If its empty it prints out a warning.
 */
 int is_file_empty(char *path);
+
+/**
+*   Name: opened_file_write_line_logging_mode
+*   Job: Write a single line to an opened file with "a" mode. And it adds the current time.
+*   Yes you have to OPEN the file before use this function, and don't forget to close it after.
+*   This mode is recommended when the data comes fast, like in a while loop.
+*   input: char *path
+*   input: char *line the line you want to log
+*   input: FILE *fw the opened file's name
+*   returns: 0 if its not empty ends. Returns 1 if it empty.
+*   If its empty it prints out a warning.
+*/
+int opened_file_write_line_logging_mode(char *line, FILE *fw);
+
+/**
+*   Name: file_write_line_logging_mode
+*   Job: Write a single line to a file with "a" mode. And it adds the current time.
+*   input: char *path
+*   input: char *line the line you want to log
+*   returns: 0 if its not empty ends. Returns 1 if it empty.
+*   If its empty it prints out a warning.
+*/
+int file_write_line_logging_mode(char *path, char *line);
+
+
 
 #endif // FILE_IO_H_INCLUDED
