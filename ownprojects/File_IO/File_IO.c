@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <windows.h>
 #include "file_IO.h"
+
 
 //---------------FILE I/O FUNCTIONS-------------------
 
@@ -46,6 +49,52 @@ int file_write_single_line(char *path, char *mode, char *line)
 
     return 0;
 }
+
+int file_write_line_logging_mode(char *path, char *line)
+{
+    if (strlen(line) > ROW_LENGTH) {
+        printf("Line is bigger than the max readable line (%d).", ROW_LENGTH);
+        return 1;
+    }
+
+    char path_for_test[PATH_LENGTH];
+    strcpy(path_for_test, path);
+
+    if(path_test(path_for_test))
+    return 1;
+
+    FILE *fw;
+    fw = fopen(path, "a");
+    time_t curtime;
+    struct tm *lt;
+    curtime = time(NULL);
+    lt = localtime(&curtime);
+
+    fprintf(fw, "%d-%d-%d %d:%d:%d\t%s\n", lt -> tm_year + 1900, lt -> tm_mon, lt -> tm_mday,
+            lt ->tm_hour, lt ->tm_min, lt->tm_sec, line);
+
+    fclose(fw);
+
+    return 0;
+}
+
+int opened_file_write_line_logging_mode(char *line, FILE *fw)
+{
+    if (strlen(line) > ROW_LENGTH) {
+        printf("Line is bigger than the max readable line (%d).", ROW_LENGTH);
+        return 1;
+    }
+
+    time_t curtime;
+    struct tm *lt;
+    curtime = time(NULL);
+    lt = localtime(&curtime);
+    fprintf(fw, "%d-%d-%d %d:%d:%d\t%s\n", lt -> tm_year + 1900, lt -> tm_mon, lt -> tm_mday,
+            lt ->tm_hour, lt ->tm_min, lt->tm_sec, line);
+
+    return 0;
+}
+
 
 int file_write_multiple_lines(char *path, char *mode, char **str_arr, int len)
 {
@@ -181,6 +230,33 @@ int file_print(char *path)
 
     while (fgets(row, sizeof(row), fr) != NULL) {
         printf("%s", row);
+    }
+
+    fclose(fr);
+
+    return 0;
+}
+
+int file_print_delay(char *path, int delay)
+{
+
+    char path_for_test[PATH_LENGTH];
+    strcpy(path_for_test, path);
+
+    if(path_test(path_for_test))
+        return 1;
+
+    if (is_file_empty(path))
+        return 1;
+
+    FILE *fr;
+    char row[ROW_LENGTH];
+
+    fr = fopen(path, "r");
+
+    while (fgets(row, sizeof(row), fr) != NULL) {
+        printf("%s", row);
+        Sleep(delay);
     }
 
     fclose(fr);
