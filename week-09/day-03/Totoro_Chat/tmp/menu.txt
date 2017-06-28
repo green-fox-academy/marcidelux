@@ -1,0 +1,22 @@
+###########################
+####### TOTORO CHAT #######
+###########################
+
+Program Commans:
+ h   Display this help info
+ c   Clear screen
+ e   Exit
+ 
+Users Commands:
+ n   Set user name
+ d   Send discovery request
+ l   List active users
+ s   Save users to a file
+ p   Print saved users
+
+Message Commands:
+ m   Send message
+ a   Send message to all users
+ x   Spamm all to hell
+
+Your command: 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Totoro_Chat" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Totoro_Chat" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="ws2_32" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Totoro_Chat" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="FILE_IO.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FILE_IO.h" />
+		<Unit filename="broadcast_listener.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="broadcast_listener.h" />
+		<Unit filename="discovery_listener.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="discovery_listener.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="message_listener.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="message_listener.h" />
+		<Unit filename="sender.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sender.h" />
+		<Unit filename="user.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="user.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
