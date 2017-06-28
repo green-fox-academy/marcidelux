@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "user.h"
 #include "sender.h"
+#include "discovery_listener.h"
+#include "discovery_listener.h"
 
 #define DATA_BUFFER_SIZE    1024
 
@@ -62,26 +64,56 @@ int send_message(SOCKET *socket, char *msg)
 	return sent_bytes;
 }
 
-void send_message_to_user(char *temp_message, totoro_user *temp_user)
+void send_message_to_user(char *temp_message, totoro_user *users,int users_len)
 {
+    if (users_len == 0) {
+        printf("Users array is empty!\n");
+        return;
+    }
+
+    char str[MESSAGE_LEN];
+    strcpy(str, temp_message);
+    char *token;
+    const char s[2] = " ";
+    totoro_user *user_ptr;
+
+    token = strtok(str, s);
+    user_ptr = find_user_by_name(users, users_len, token);
+
+    token = strtok(NULL, s);
+
+    printf("%s, %s, %d, message: %s", user_ptr->name, user_ptr->IP_addr, user_ptr->Port, token);
+
+
 	// Initialize the WSA
 	wsa_init();
 
 	// Connect to server
 	SOCKET client_socket;
-	connect_to_server(&client_socket, temp_user->IP_addr, temp_user->Port);
+	connect_to_server(&client_socket, user_ptr->IP_addr, user_ptr->Port);
 
-	// Local variables used in the do-while loop
 	int sent_bytes;
-	int received_bytes;
-	char recv_buff[DATA_BUFFER_SIZE];
-
 		// Send data to the server
-    sent_bytes = send_message(&client_socket, temp_message);
+    sent_bytes = send_message(&client_socket, token);
 
-	printf("Closing the socket...\n");
 	closesocket(client_socket);
-	printf("Cleaning up memory...\n");
 	WSACleanup();
+}
 
+void send_broadcast_message()
+{
+
+	// Initialize the WSA
+	wsa_init();
+
+	// Connect to server
+	SOCKET client_socket;
+	connect_to_server(&client_socket, "255.255.255.255", 12345);
+
+	int sent_bytes;
+		// Send data to the server
+    sent_bytes = send_message(&client_socket, "TOTORO 5656");
+
+	closesocket(client_socket);
+	WSACleanup();
 }
