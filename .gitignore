@@ -85,6 +85,8 @@ dkms.conf
 *.cbp
 *.layout
 *.depend
+*.h.save
+*.c.save
 
 # generated directories
 bin/

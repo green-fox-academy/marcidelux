@@ -1,0 +1,24 @@
+#########################
+### FAN SPEED CONTROL ###
+#########################
+#### SETUP--TERMINAL ####
+#########################
+
+Port Commands:
+l - List aviable ports
+p - Set port name
+o - Open Port
+c - Close Port
+
+File I/O commands:
+w - Set write file name
+r - Set read file name
+s - Start logging to write file
+a - Read data from file to an array
+
+Program commands:
+x - Clear screen, print menu
+d - Switch to Data menu
+e - Exit from the program
+
+Command: 
