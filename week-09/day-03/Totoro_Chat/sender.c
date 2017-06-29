@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <conio.h>
 #include "user.h"
 #include "sender.h"
 #include "discovery_listener.h"
-#include "discovery_listener.h"
+#include "winsock2.h"
 
 #define DATA_BUFFER_SIZE    1024
 
@@ -15,14 +16,6 @@ void handle_error(const char *error_string)
 	printf("Press any key to exit from the program...");
 	while (!kbhit());
 	exit(EXIT_FAILURE);
-}
-
-void wsa_init()
-{
-	WSADATA wsaData;
-	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (iResult != NO_ERROR)
-		handle_error("WSAStartup() ");
 }
 
 void connect_to_server(SOCKET *client_sock, char *server_ip, int server_port)
@@ -64,8 +57,10 @@ int send_message(SOCKET *socket, char *msg)
 	return sent_bytes;
 }
 
-void send_message_to_user(char *temp_message, totoro_user *users,int users_len)
+void send_message_to_user(char *temp_message, totoro_user *users,int users_len, WSADATA *wsaData)
 {
+    int iResult;
+
     if (users_len == 0) {
         printf("Users array is empty!\n");
         return;
@@ -84,9 +79,12 @@ void send_message_to_user(char *temp_message, totoro_user *users,int users_len)
 
     printf("%s, %s, %d, message: %s", user_ptr->name, user_ptr->IP_addr, user_ptr->Port, token);
 
-
-	// Initialize the WSA
-	wsa_init();
+    //Wsa set
+    iResult = WSAStartup(MAKEWORD(2, 2), wsaData);
+    if (iResult != NO_ERROR) {
+        wprintf(L"WSAStartup failed with error: %d\n", iResult);
+        return;
+    }
 
 	// Connect to server
 	SOCKET client_socket;
@@ -100,20 +98,38 @@ void send_message_to_user(char *temp_message, totoro_user *users,int users_len)
 	WSACleanup();
 }
 
-void send_broadcast_message()
+
+void send_broadcast_message(WSADATA *wsaData)
 {
+    const char str[] = "TOTORO 5656";
+    struct sockaddr_in Remote_Address;
+    int iResult;
+    char iOptVal = 1;
+    char iOptLen = sizeof (iOptVal);
+    SOCKET broadcast_socket;
 
 	// Initialize the WSA
-	wsa_init();
+    iResult = WSAStartup(MAKEWORD(2, 2), wsaData);
+    if (iResult != NO_ERROR) {
+        wprintf(L"WSAStartup failed with error: %d\n", iResult);
+        return;
+    }
 
-	// Connect to server
-	SOCKET client_socket;
-	connect_to_server(&client_socket, "255.255.255.255", 12345);
+    Remote_Address.sin_family = AF_INET;
+    Remote_Address.sin_addr.s_addr = inet_addr("255.255.255.255"); //INADDR_ANYddd
+    Remote_Address.sin_port = htons(12345);
 
-	int sent_bytes;
+    broadcast_socket = socket(AF_INET, SOCK_DGRAM, 0);
+
+	iResult = setsockopt(broadcast_socket, SOL_SOCKET, SO_BROADCAST, (char *) &iOptVal, iOptLen);
+	if (iResult == SOCKET_ERROR) {
+        printf("getsockopt for SO_KEEPALIVE failed with error: \n");
+    }
+
 		// Send data to the server
-    sent_bytes = send_message(&client_socket, "TOTORO 5656");
+    iResult = sendto(broadcast_socket, str, strlen(str), 0, (SOCKADDR*) & Remote_Address, sizeof(Remote_Address));
+    printf("\n%d\n", iResult);
 
-	closesocket(client_socket);
+	closesocket(broadcast_socket);
 	WSACleanup();
 }

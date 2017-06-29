@@ -13,6 +13,13 @@ typedef struct {
     int Port;
 } totoro_user;
 
+typedef struct {
+    totoro_user users[50];
+    int users_len;
+} totoro_users;
+
+totoro_users totoro_user_list;
+
 // functions
 void print_active_users(totoro_user *users, int users_length);
 totoro_user* find_user_by_name(totoro_user *users, int users_length, char *user_name);

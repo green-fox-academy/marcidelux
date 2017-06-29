@@ -1,6 +1,8 @@
 #ifndef DISCOVERY_LISTENER_H_INCLUDED
 #define DISCOVERY_LISTENER_H_INCLUDED
 
+#define DISCOVERY_PORT 5656
 
+void broadcast_server(totoro_user *users, WSADATA *wsaData);
 
 #endif // DISCOVERY_LISTENER_H_INCLUDED

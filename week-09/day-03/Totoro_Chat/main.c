@@ -26,6 +26,7 @@ void command_handle(char command);
 void clear_screen();
 
 // Global variables
+WSADATA wsaData;
 totoro_user users[50];
 int users_len = 0;
 
@@ -36,13 +37,15 @@ int main()
 
     system_setup();
 
+    // Initialize the WSA
+
     strcpy(users[0].IP_addr, "10.27.6.127");
     strcpy(users[0].name, "Kakimaki");
     users[0].Port = 1549;
 
-    strcpy(users[1].IP_addr, "10.1.10.105");
+    strcpy(users[1].IP_addr, "10.27.6.127");
     strcpy(users[1].name, "Fikakiralyno");
-    users[1].Port = 8888;
+    users[1].Port = 5656;
 
     strcpy(users[2].IP_addr, "10.21.01.2");
     strcpy(users[2].name, "Nyalherceg");
@@ -54,7 +57,7 @@ int main()
             command = _getch();
         }
         command_handle(command);
-        command = NULL;
+        command = 0;
 
     }
 
@@ -65,7 +68,13 @@ void system_setup()
 {
     // Print out the menu
     file_print(MENU_PATH);
-    _beginthread(broadcast_listener_thread, 0, NULL);
+
+    int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (iResult != NO_ERROR) {
+        wprintf(L"WSAStartup failed with error: %d\n", iResult);
+    }
+
+//    _beginthread(broadcast_server, 0, NULL);
 }
 
 void command_handle(char command)
@@ -86,7 +95,7 @@ void command_handle(char command)
 
     } else if (command == 'd') {
         printf("d - Send discovery request:\n");
-        send_broadcast_message();
+        send_broadcast_message(&wsaData);
         printf("\nNext command: ");
 
     } else if (command == 'l') {
@@ -106,7 +115,7 @@ void command_handle(char command)
 
     } else if (command == 'm') {
         printf("h - Send message:\n");
-        send_message_to_user("Fikakiralyno Faszsag", users, 3);
+        send_message_to_user("Fikakiralyno halobalo", users, 3, &wsaData);
         printf("\nNext command: ");
 
     } else if (command == 'a') {
@@ -121,7 +130,7 @@ void command_handle(char command)
         printf("h - Spamm all to hell:\n");
 
         printf("\nNext command: ");
-    } else if (command == NULL) {
+    } else if (command == 0) {
 
     }
 }

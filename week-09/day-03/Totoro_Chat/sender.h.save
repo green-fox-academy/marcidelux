@@ -1,7 +1,12 @@
 #ifndef SENDER_H_INCLUDED
 #define SENDER_H_INCLUDED
 
-void send_message_to_user(char *temp_message, totoro_user *temp_user);
+#define MESSAGE_LEN 1024
+
+#include <winsock2.h>
+
+void send_message_to_user(char *temp_message, totoro_user *users,int users_len);
+void send_broadcast_message(WSADATA *wsaData);
 
 //inside functions
 void handle_error(const char *error_string);
