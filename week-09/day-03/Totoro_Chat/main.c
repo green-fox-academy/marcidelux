@@ -15,6 +15,7 @@
 #include "user.h"
 #include "sender.h"
 #include "broadcast_listener.h"
+#include "discovery_listener.h"
 
 // Define things
 #define MENU_PATH "tmp/menu.txt"
@@ -39,17 +40,23 @@ int main()
 
     // Initialize the WSA
 
-    strcpy(users[0].IP_addr, "10.27.6.127");
-    strcpy(users[0].name, "Kakimaki");
-    users[0].Port = 1549;
+    init_users();
+    add_user("Pista", 0xff02f2ff , 8765);
+    add_user("Kata", 0x0002f2ff , 6666);
+    add_user("Zoli", 0x43FF22ff , 5656);
 
-    strcpy(users[1].IP_addr, "10.27.6.127");
-    strcpy(users[1].name, "Fikakiralyno");
-    users[1].Port = 5656;
+    printf("\n");
+    print_active_users();
 
-    strcpy(users[2].IP_addr, "10.21.01.2");
-    strcpy(users[2].name, "Nyalherceg");
-    users[2].Port = 1888;
+    totoro_user* user_ptr = find_user_by_name("Kaki");
+
+    if (user_ptr != NULL) {
+        struct in_addr temp_ip;
+        temp_ip.s_addr = user_ptr -> IP_addr;
+        printf("name: %s, IP: %s, PORT: %d\n", user_ptr -> name, inet_ntoa(temp_ip), user_ptr -> Port);
+    } else {
+        printf("pointer is NULL");
+    }
 
     while (1) {
 
@@ -74,7 +81,8 @@ void system_setup()
         wprintf(L"WSAStartup failed with error: %d\n", iResult);
     }
 
-//    _beginthread(broadcast_server, 0, NULL);
+    _beginthread(broadcast_server, 0, NULL);
+   // _beginthread(discovery_server, 0, NULL);
 }
 
 void command_handle(char command)
@@ -115,7 +123,7 @@ void command_handle(char command)
 
     } else if (command == 'm') {
         printf("h - Send message:\n");
-        send_message_to_user("Fikakiralyno halobalo", users, 3, &wsaData);
+        send_message_to_user("Zoli halobalo");
         printf("\nNext command: ");
 
     } else if (command == 'a') {

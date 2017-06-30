@@ -9,7 +9,7 @@
 
 typedef struct {
     char name[USER_NAME_LEN];
-    char IP_addr[15];
+    int IP_addr;
     int Port;
 } totoro_user;
 
@@ -21,7 +21,8 @@ typedef struct {
 totoro_users totoro_user_list;
 
 // functions
-void print_active_users(totoro_user *users, int users_length);
-totoro_user* find_user_by_name(totoro_user *users, int users_length, char *user_name);
+void add_user(char *name, int IP, int port);
+void print_active_users();
+totoro_user* find_user_by_name(char *user_name);
 
 #endif // USER_H_INCLUDED

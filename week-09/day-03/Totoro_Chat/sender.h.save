@@ -5,7 +5,7 @@
 
 #include <winsock2.h>
 
-void send_message_to_user(char *temp_message, totoro_user *users,int users_len);
+void send_message_to_user(char *temp_message);
 void send_broadcast_message(WSADATA *wsaData);
 
 //inside functions

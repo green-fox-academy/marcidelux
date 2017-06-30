@@ -3,4 +3,6 @@
 
 #define DISCOVERY_PORT 5656
 
+void discovery_server();
+
 #endif // DISCOVERY_LISTENER_H_INCLUDED

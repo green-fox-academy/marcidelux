@@ -31,7 +31,7 @@ void connect_to_server(SOCKET *client_sock, char *server_ip, int server_port)
 	addr_in.sin_port = htons(server_port);
 	addr_in.sin_addr.s_addr = inet_addr(server_ip);
 
-	// Connecting the client socket to the server
+	// Connecting the c lient socket to the server
 	int connect_retval = connect(*client_sock, (struct sockaddr *)&addr_in, sizeof(addr_in));
 	if (connect_retval < 0)
 		handle_error("connect() ");
@@ -57,20 +57,9 @@ int send_message(SOCKET *socket, char *msg)
 	return sent_bytes;
 }
 
-void send_message_to_user(char *temp_message, totoro_user *users,int users_len, WSADATA *wsaData)
+void send_message_to_user(char *temp_message) // totoro_user *users,int users_len, WSADATA *wsaData
 {
-    int iResult;
-
-    if (users_len == 0) {
-        printf("Users array is empty!\n");
-        return;
-    }
-
-    iResult = WSAStartup(MAKEWORD(2, 2), wsaData);
-    if (iResult != NO_ERROR) {
-        wprintf(L"WSAStartup failed with error: %d\n", iResult);
-        return;
-    }
+   // int iResult;
 
     char str[MESSAGE_LEN];
     strcpy(str, temp_message);
@@ -79,7 +68,7 @@ void send_message_to_user(char *temp_message, totoro_user *users,int users_len, 
     totoro_user *user_ptr;
 
     token = strtok(str, s);
-    user_ptr = find_user_by_name(users, users_len, token);
+    user_ptr = find_user_by_name(token);
 
     token = strtok(NULL, s);
 
@@ -95,11 +84,23 @@ void send_message_to_user(char *temp_message, totoro_user *users,int users_len, 
     sent_bytes = send_message(&client_socket, token);
 
 	closesocket(client_socket);
-	WSACleanup();
+}
+
+void send_message_to_discovery(char *partner_ip, int partner_discovery_port)
+{
+	// Connect to server
+	SOCKET client_socket;
+	connect_to_server(&client_socket, partner_ip, partner_discovery_port);
+
+	int sent_bytes;
+		// Send data to the server
+    sent_bytes = send_message(&client_socket, "Marci 8484");
+
+	closesocket(client_socket);
 }
 
 
-void send_broadcast_message(WSADATA *wsaData)
+void send_broadcast_message() // WSADATA *wsaData
 {
     const char str[] = "TOTORO 5656";
     struct sockaddr_in Remote_Address;
@@ -109,11 +110,13 @@ void send_broadcast_message(WSADATA *wsaData)
     SOCKET broadcast_socket;
 
 	// Initialize the WSA
+	/*
     iResult = WSAStartup(MAKEWORD(2, 2), wsaData);
     if (iResult != NO_ERROR) {
         wprintf(L"WSAStartup failed with error: %d\n", iResult);
         return;
     }
+    */
 
     Remote_Address.sin_family = AF_INET;
     Remote_Address.sin_addr.s_addr = inet_addr("255.255.255.255"); //INADDR_ANYddd
@@ -123,7 +126,7 @@ void send_broadcast_message(WSADATA *wsaData)
 
 	iResult = setsockopt(broadcast_socket, SOL_SOCKET, SO_BROADCAST, (char *) &iOptVal, iOptLen);
 	if (iResult == SOCKET_ERROR) {
-        printf("getsockopt for SO_KEEPALIVE failed with error: %u\n", WSAGetLastError());
+        printf("getsockopt for SO_KEEPALIVE failed with error: \n");
     }
 
 		// Send data to the server
@@ -131,5 +134,5 @@ void send_broadcast_message(WSADATA *wsaData)
     printf("\n%d\n", iResult);
 
 	closesocket(broadcast_socket);
-	WSACleanup();
+	//WSACleanup();
 }

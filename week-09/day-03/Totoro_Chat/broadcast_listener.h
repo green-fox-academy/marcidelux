@@ -6,6 +6,6 @@
 #include <winsock2.h>
 
 //public functions
-void broadcast_server(totoro_user *users, WSADATA *wsaData);
+void broadcast_server();
 
 #endif // BROADCAST_LISTENER_H_INCLUDED
