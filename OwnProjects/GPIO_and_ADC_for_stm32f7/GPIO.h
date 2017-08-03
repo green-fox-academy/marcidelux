@@ -60,6 +60,12 @@ const gpio_pins_t stm32f7_digital_pins[] = {
 	{GPIOI, GPIO_PIN_1},     //PIN: D13
 	{GPIOB, GPIO_PIN_9},     //PIN: D14
 	{GPIOB, GPIO_PIN_8},     //PIN: D15
+	{GPIOA, GPIO_PIN_0},     //PIN: A0 - As a Digital PIN
+	{GPIOF, GPIO_PIN_10},    //PIN: A1 - As a Digital PIN
+	{GPIOF, GPIO_PIN_9},     //PIN: A2 - As a Digital PIN
+	{GPIOF, GPIO_PIN_8},     //PIN: A3 - As a Digital PIN
+	{GPIOF, GPIO_PIN_7},     //PIN: A4 - As a Digital PIN
+	{GPIOF, GPIO_PIN_6},     //PIN: A5 - As a Digital PIN
 
 };
 
