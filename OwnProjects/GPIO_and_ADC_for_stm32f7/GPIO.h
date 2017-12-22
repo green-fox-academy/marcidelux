@@ -4,6 +4,7 @@
  *
  * There are two gpio_pins_t arrays. stm32f7_digital_pins[] is for the digital pins, stm32f7_analog_pins[] is for analoge pins.
  * stm32f7_digital_pins[]'s first element (index : 0 ) is the D0 pin and the last element (index : 15) is the D15 pin.
+ * (Also its possible to init an analog pin as a digital, so index 16 to index 21 can be used too)
  * stm32f7_analoge_pins[]'s first element (index : 0 ) is the A0 pin and the last element (index : 5) is the A5 pin.
  *
  * There are two init functions for init the analog or digital pins.
