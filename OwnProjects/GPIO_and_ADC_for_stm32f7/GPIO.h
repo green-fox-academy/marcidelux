@@ -2,14 +2,14 @@
  *
  * How to use this driver?
  *
- * There are two an gpio_pins_t arrays. stm32f7_digital_pins[] is for the digital pins, stm32f7_analog_pins[] is for analoge pins.
+ * There are two gpio_pins_t arrays. stm32f7_digital_pins[] is for the digital pins, stm32f7_analog_pins[] is for analoge pins.
  * stm32f7_digital_pins[]'s first element (index : 0 ) is the D0 pin and the last element (index : 15) is the D15 pin.
  * stm32f7_analoge_pins[]'s first element (index : 0 ) is the A0 pin and the last element (index : 5) is the A5 pin.
  *
  * There are two init functions for init the analog or digital pins.
  * And there are some functions to read write etc... thoose pins.
  *
- * Example for an analoge pin:
+ * Example for digital pin:
  * Init:	gpio_init_digital_pin(5, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL);
  * Write: 	gpio_write_digital_pin(5, GPIO_PIN_SET);
  * Reset:   gpio_reset_digital_pin(5);
@@ -49,12 +49,28 @@ void gpio_init_digital_pin(uint8_t pin_index, uint32_t mode, uint32_t pull);
  */
 void gpio_write_digital_pin(uint8_t pin_index, GPIO_PinState State);
 
+/*	Function name: gpio_set_digital_pin
+ * 	Function purpose: Turn on the digital pin
+ *	Function input - uint8_t pin_index: index of the pin
+ */
 void gpio_set_digital_pin(uint8_t pin_index);
 
+/*	Function name: gpio_reset_digital_pin
+ * 	Function purpose: Turn off the digital pin
+ *	Function input - uint8_t pin_index: index of the pin
+ */
 void gpio_reset_digital_pin(uint8_t pin_index);
 
+/*	Function name: gpio_toggle_digital_pin
+ * 	Function purpose: If the pin was set it turns it reset, if it was reset it turns it to set.
+ *	Function input - uint8_t pin_index: index of the pin
+ */
 void gpio_toggle_digital_pin(uint8_t pin_index);
 
+/*	Function name: gpio_read_digital_pin
+ * 	Function purpose: Returns with the pin's value.
+ *	Function input - uint8_t pin_index: index of the pin
+ */
 GPIO_PinState gpio_read_digital_pin(uint8_t pin_index);
 
 /* ########## Functions for Analoge pins ########## */
